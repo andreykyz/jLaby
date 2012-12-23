@@ -1,5 +1,11 @@
 package devhead.ru.jlaby;
 
+/**
+ * jLaby according by laby 
+ * 
+ * @author Kuznetsov Andrey
+ *
+ */
 public class Laby {
 
 	/**

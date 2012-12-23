@@ -8,6 +8,7 @@ public class Field {
 	private String fileType = ".png";
 	private String filePath;
 	private ImageIcon imageIcon;
+	public static int dim = 32;
 
 	public Field(String type) {
 		this.type = type;
