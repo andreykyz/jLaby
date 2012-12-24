@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 @SuppressWarnings("serial")
-public class LevelMap extends JComponent {
+public class LevelMap extends JComponent implements Ant {
 
 	private HashMap<Point, Field> levelMap;
 	private Dimension dimension;
@@ -73,6 +73,39 @@ public class LevelMap extends JComponent {
 						y * imageIcon.getIconHeight());
 			}
 		}
+	}
 
+	@Override
+	public void right() {
+		for (int y = 0; y < dimension.height; y++) {
+			for (int x = 0; x < dimension.width; x++) {
+				Field field = levelMap.get(new Point(x, y));
+
+			}
+		}		
+	}
+
+	@Override
+	public void left() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void forward() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void take() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void drop() {
+		// TODO Auto-generated method stub
+		
 	}
 }
