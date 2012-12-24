@@ -8,9 +8,13 @@ public class Field {
 	private String fileType = ".png";
 	private String filePath;
 	private ImageIcon imageIcon;
+	private boolean ant;
+	private boolean obstacle;
 	public static int dim = 32;
 
 	public Field(String type) {
+		ant = false;
+		obstacle = false;
 		this.type = type;
 		if (type.equals(".")) {
 			filePath = "data/tiles/void" + fileType;
@@ -18,22 +22,29 @@ public class Field {
 			filePath = "data/tiles/wall" + fileType;
 		} else if (type.equals("r")) {
 			filePath = "data/tiles/rock" + fileType;
+			obstacle = true;
 		} else if (type.equals("R")) {
 			filePath = "data/tiles/nrock" + fileType;
 		} else if (type.equals("w")) {
 			filePath = "data/tiles/web" + fileType;
+			obstacle = true;
 		} else if (type.equals("W")) {
 			filePath = "data/tiles/nweb" + fileType;
 		} else if (type.equals("x")) {
 			filePath = "data/tiles/exit" + fileType;
+			obstacle = true;
 		} else if (type.equals("↑")) {
 			filePath = "data/tiles/ant-n" + fileType;
+			ant = true;
 		} else if (type.equals("↓")) {
 			filePath = "data/tiles/ant-s" + fileType;
+			ant = true;
 		} else if (type.equals("←")) {
 			filePath = "data/tiles/ant-w" + fileType;
+			ant = true;
 		} else if (type.equals("→")) {
 			filePath = "data/tiles/ant-e" + fileType;
+			ant = true;
 		}
 		imageIcon = new ImageIcon(filePath);
 	}
@@ -58,6 +69,20 @@ public class Field {
 	 */
 	public ImageIcon getImageIcon() {
 		return imageIcon;
+	}
+
+	/**
+	 * @return the ant
+	 */
+	public boolean isAnt() {
+		return ant;
+	}
+
+	/**
+	 * @return the obstacle
+	 */
+	public boolean isObstacle() {
+		return obstacle;
 	}
 
 }

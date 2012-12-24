@@ -17,6 +17,7 @@ public class LevelMap extends JComponent implements Ant {
 
 	private HashMap<Point, Field> levelMap;
 	private Dimension dimension;
+	private Point antPosition;
 
 	public LevelMap() {
 
@@ -50,7 +51,11 @@ public class LevelMap extends JComponent implements Ant {
 					String mapLine[] = line.split(" ");
 					int x;
 					for (x = 0; x < mapLine.length; x++) {
-						levelMap.put(new Point(x, y), new Field(mapLine[x]));
+						Point point = new Point(x, y);
+						levelMap.put(point, new Field(mapLine[x]));
+						if (levelMap.get(point).isAnt()) {
+							antPosition = point;
+						}
 					}
 					if (dimension.width < mapLine.length) {
 						dimension.height = mapLine.length;
@@ -77,12 +82,7 @@ public class LevelMap extends JComponent implements Ant {
 
 	@Override
 	public void right() {
-		for (int y = 0; y < dimension.height; y++) {
-			for (int x = 0; x < dimension.width; x++) {
-				Field field = levelMap.get(new Point(x, y));
-
-			}
-		}		
+		
 	}
 
 	@Override
@@ -90,11 +90,38 @@ public class LevelMap extends JComponent implements Ant {
 		// TODO Auto-generated method stub
 		
 	}
-
+/**
+ * Calculate next position and is doing step if possible.
+ */
 	@Override
 	public void forward() {
-		// TODO Auto-generated method stub
-		
+		Field antField = levelMap.get(antPosition);
+		Point nextPoint = null;
+/*      ------------> x
+ *      | 
+ *      |    O_o
+ *      |
+ *     \/ y
+ */
+		if (antField.getType().equals("→")) {
+			nextPoint = new Point(antPosition.x + 1, antPosition.y);
+		} else if (antField.getType().equals("←")) {
+			nextPoint = new Point(antPosition.x - 1, antPosition.y);
+		} else if (antField.getType().equals("↑")) {
+			nextPoint = new Point(antPosition.x, antPosition.y - 1);
+		} else if (antField.getType().equals("↓")) {
+			nextPoint = new Point(antPosition.x, antPosition.y + 1);
+		}
+		Field nextField = levelMap.get(nextPoint);
+		if (nextField.isObstacle()) {
+			return;
+		} else {
+			levelMap.remove(nextPoint);
+			levelMap.remove(antPosition);
+			levelMap.put(antPosition, nextField);
+			levelMap.put(nextPoint, antField);
+			return;
+		}
 	}
 
 	@Override
@@ -108,4 +135,5 @@ public class LevelMap extends JComponent implements Ant {
 		// TODO Auto-generated method stub
 		
 	}
+
 }
