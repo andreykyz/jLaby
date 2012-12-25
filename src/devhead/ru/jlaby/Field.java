@@ -10,11 +10,28 @@ public class Field {
 	private ImageIcon imageIcon;
 	private boolean ant;
 	private boolean obstacle;
+	private boolean rock;
 	public static int dim = 32;
 
 	public Field(String type) {
+		this.setType(type);
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type
+	 *            the type to set
+	 */
+	public void setType(String type) {
 		ant = false;
 		obstacle = false;
+		rock = false;
 		this.type = type;
 		if (type.equals(".")) {
 			filePath = "data/tiles/void" + fileType;
@@ -23,6 +40,7 @@ public class Field {
 		} else if (type.equals("r")) {
 			filePath = "data/tiles/rock" + fileType;
 			obstacle = true;
+			rock = true;
 		} else if (type.equals("R")) {
 			filePath = "data/tiles/nrock" + fileType;
 		} else if (type.equals("w")) {
@@ -50,21 +68,6 @@ public class Field {
 	}
 
 	/**
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-
-	/**
-	 * @param type
-	 *            the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	/**
 	 * @return the image
 	 */
 	public ImageIcon getImageIcon() {
@@ -78,6 +81,13 @@ public class Field {
 		return ant;
 	}
 
+	/**
+	 * @return the rock
+	 */
+	public boolean isRock() {
+		return rock;
+	}
+	
 	/**
 	 * @return the obstacle
 	 */

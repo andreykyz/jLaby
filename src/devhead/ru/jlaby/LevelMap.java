@@ -82,14 +82,34 @@ public class LevelMap extends JComponent implements Ant {
 
 	@Override
 	public void right() {
-		
+		Field antField = levelMap.get(antPosition);
+		if (antField.getType().equals("↑")) {
+			antField.setType("→");
+		} else if (antField.getType().equals("↓")) {
+			antField.setType("←");
+		} else if (antField.getType().equals("←")) {
+			antField.setType("↑");
+		} else if (antField.getType().equals("→")) {
+			antField.setType("↓");
+		}
+		this.repaint();
 	}
 
 	@Override
 	public void left() {
-		// TODO Auto-generated method stub
-		
+		Field antField = levelMap.get(antPosition);
+		if (antField.getType().equals("↑")) {
+			antField.setType("←");
+		} else if (antField.getType().equals("↓")) {
+			antField.setType("→");
+		} else if (antField.getType().equals("←")) {
+			antField.setType("↓");
+		} else if (antField.getType().equals("→")) {
+			antField.setType("↑");
+		}
+		this.repaint();
 	}
+	
 /**
  * Calculate next position and is doing step if possible.
  */
@@ -114,14 +134,15 @@ public class LevelMap extends JComponent implements Ant {
 		}
 		Field nextField = levelMap.get(nextPoint);
 		if (nextField.isObstacle()) {
-			return;
+			/* need it say */
 		} else {
 			levelMap.remove(nextPoint);
 			levelMap.remove(antPosition);
 			levelMap.put(antPosition, nextField);
 			levelMap.put(nextPoint, antField);
-			return;
+			antPosition = nextPoint;
 		}
+		this.repaint();
 	}
 
 	@Override
