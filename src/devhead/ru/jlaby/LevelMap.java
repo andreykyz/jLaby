@@ -19,9 +19,10 @@ public class LevelMap extends JComponent implements Ant {
 	private Dimension dimension;
 	private Point antPosition;
 
-//	public LevelMap() {
-
-//	}
+	public LevelMap(String levelPath) {
+	    LoadLevel(levelPath);
+	    this.setMinimumSize(new Dimension(600,400));
+	}
 
 	public void LoadLevel(String levelPath) {
 		levelMap = new HashMap<Point, Field>();
@@ -51,14 +52,14 @@ public class LevelMap extends JComponent implements Ant {
 					String mapLine[] = line.split(" ");
 					int x;
 					for (x = 0; x < mapLine.length; x++) {
-						Point point = new Point(x, y);
+						Point point = new Point(x, dimension.height);
 						levelMap.put(point, new Field(mapLine[x]));
 						if (levelMap.get(point).isAnt()) {
 							antPosition = point;
 						}
 					}
 					if (dimension.width < mapLine.length) {
-						dimension.height = mapLine.length;
+						dimension.width = mapLine.length;
 					}
 					dimension.height++;
 				}

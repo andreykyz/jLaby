@@ -79,9 +79,10 @@ public class Laby extends JFrame {
 		String[] language = {"C", "Python", "Java"};
 		JComboBox languageChooser = new JComboBox(language);
 		JLabel levelLabel = new JLabel("Level:");
-		JComboBox levelChooser = new JComboBox(path.listFiles(filenamefilter));
-//		LevelMap levelMap = new LevelMap();
-		JLabel levelMap = new JLabel("field");
+		File[] arFiles = path.listFiles(filenamefilter);
+		JComboBox levelChooser = new JComboBox(arFiles);
+		LevelMap levelMap = new LevelMap("data/levels/1c.laby");
+//		JLabel levelMap = new JLabel("field");
 		
 		JLabel helpArea = new JLabel("<html><b>This is help</b><br>First line<br>Second line</html>");
 
@@ -128,7 +129,7 @@ public class Laby extends JFrame {
 
 		this.setContentPane(panel);
 		pack();
-
+		levelMap.repaint();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
