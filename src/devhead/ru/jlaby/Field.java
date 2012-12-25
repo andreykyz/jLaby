@@ -34,7 +34,7 @@ public class Field {
 		rock = false;
 		this.type = type;
 		if (type.equals(".")) {
-			filePath = "data/tiles/void" + fileType;
+			filePath = Laby.IMAGES_PATH + "/void" + fileType;
 		} else if (type.equals("o")) {
 			filePath = "data/tiles/wall" + fileType;
 		} else if (type.equals("r")) {

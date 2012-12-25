@@ -19,9 +19,9 @@ public class LevelMap extends JComponent implements Ant {
 	private Dimension dimension;
 	private Point antPosition;
 
-	public LevelMap() {
+//	public LevelMap() {
 
-	}
+//	}
 
 	public void LoadLevel(String levelPath) {
 		levelMap = new HashMap<Point, Field>();
