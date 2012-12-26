@@ -15,5 +15,7 @@ public interface Ant {
 	public void take();
 
 	public void drop();
+	
+	public void escape();
 
 }

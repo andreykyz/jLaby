@@ -3,6 +3,8 @@ package devhead.ru.jlaby;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -44,6 +46,7 @@ public class Laby extends JFrame implements KeyListener{
 	
 	JRadioButtonMenuItem miSurvivor;
 	LevelMap levelMap;
+	final JEditorPane codeArea;
 	
 	public Laby() {
 		final JFrame frame = this;
@@ -58,6 +61,20 @@ public class Laby extends JFrame implements KeyListener{
 		});
 		
 		miSurvivor = new JRadioButtonMenuItem("Survivor mode");
+		miSurvivor.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if(arg0.getActionCommand().equals("disable")) {
+                    frame.setFocusable(false);
+                } else {
+                    frame.setFocusable(true);
+                    frame.requestFocus();
+                }
+                
+            }
+		    
+		});
 		
 		JMenuItem miAbout = new JMenuItem("About");
 		miAbout.addActionListener(new ActionListener() {
@@ -96,6 +113,22 @@ public class Laby extends JFrame implements KeyListener{
 		JLabel levelLabel = new JLabel("Level:");
 		File[] arFiles = path.listFiles(filenamefilter);
 		JComboBox levelChooser = new JComboBox(arFiles);
+		levelChooser.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent itemEvent) {
+                if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+                    levelMap.LoadLevel(itemEvent.getItem().toString());
+                    if (miSurvivor.isSelected()) {
+                        frame.requestFocus();
+                    } else {
+                        codeArea.requestFocus();
+                    }
+                    frame.repaint();
+                }
+            }
+		    
+		});
 		JTextArea feedBack =  new JTextArea();
 		feedBack.enableInputMethods(false);
 		feedBack.setMinimumSize(new Dimension(100,feedBack.getFont().getSize()*15));
@@ -108,7 +141,7 @@ public class Laby extends JFrame implements KeyListener{
 
 		DefaultSyntaxKit.initKit();
 
-		final JEditorPane codeArea = new JEditorPane();
+		codeArea = new JEditorPane();
 		JScrollPane codeAreaS = new JScrollPane(codeArea);
 		codeArea.setMinimumSize(new Dimension(100,codeArea.getFont().getSize()*20));
 		codeArea.setContentType("text/java");
@@ -160,7 +193,6 @@ public class Laby extends JFrame implements KeyListener{
 		levelMap.repaint();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		addKeyListener(this);
-		setFocusable(true);
 	}
 
 	public static void main(String[] args) {
@@ -190,6 +222,9 @@ public class Laby extends JFrame implements KeyListener{
         }
         if (key.getKeyCode() == KeyEvent.VK_D) {
             levelMap.drop();
+        }
+        if (key.getKeyCode() == KeyEvent.VK_E) {
+            levelMap.escape();
         }
     }
 

@@ -71,6 +71,7 @@ public class LevelMap extends JComponent implements Ant {
 		}
         feedBack.insert("I'm ready.\n", 0);
         feedBack.select(0,0);
+        this.repaint();
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -207,6 +208,12 @@ public class LevelMap extends JComponent implements Ant {
             checkField.setType("r");
         }
         this.repaint();
+    }
+
+    @Override
+    public void escape() {
+        // TODO Auto-generated method stub
+        
     }
 
 }
