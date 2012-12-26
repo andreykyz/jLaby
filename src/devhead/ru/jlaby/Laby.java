@@ -1,5 +1,6 @@
 package devhead.ru.jlaby;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -92,13 +93,14 @@ public class Laby extends JFrame implements KeyListener, ActionListener{
 		JComboBox levelChooser = new JComboBox(arFiles);
 		JTextArea feedBack =  new JTextArea();
 		feedBack.enableInputMethods(false);
+		feedBack.setMinimumSize(new Dimension(100,feedBack.getFont().getSize()*15));
 		levelMap = new LevelMap("data/levels/1c.laby", feedBack);
-//		JLabel levelMap = new JLabel("field");
 		
 		JLabel helpArea = new JLabel("<html><b>This is help</b><br>First line<br>Second line</html>");
 
 		
 		JTextArea codeArea = new JTextArea();
+		codeArea.setMinimumSize(new Dimension(100,codeArea.getFont().getSize()*20));
 		
 		/* Layouts*/
 		GroupLayout layout = new GroupLayout(panel);

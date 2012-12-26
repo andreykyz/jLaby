@@ -69,7 +69,7 @@ public class LevelMap extends JComponent implements Ant {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        feedBack.append("I'm ready.\n");
+        feedBack.insert("I'm ready.\n", 0);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -134,11 +134,11 @@ public class LevelMap extends JComponent implements Ant {
 		}
 		Field nextField = levelMap.get(nextPoint);
 		if (nextField.getType().equals("r")) {
-			feedBack.append("I can't go through this rock.\n");
+			feedBack.insert("I can't go through this rock.\n", 0);
         } else if (nextField.getType().equals("o")) {
-            feedBack.append("I can't go through this the wall.\n");
+            feedBack.insert("I can't go through this the wall.\n", 0);
         } else if (nextField.getType().equals("x")) {
-            feedBack.append("I can't go through this the door.\n");
+            feedBack.insert("I can't go through this the door.\n", 0);
         } else {
 			levelMap.remove(nextPoint);
 			levelMap.remove(antPosition);
