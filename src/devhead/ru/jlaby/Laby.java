@@ -10,6 +10,7 @@ import java.io.FilenameFilter;
 
 import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -21,6 +22,8 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+
+import jsyntaxpane.DefaultSyntaxKit;
 
 /**
  * jLaby according by laby
@@ -103,10 +106,14 @@ public class Laby extends JFrame implements KeyListener{
 		
 		JLabel helpArea = new JLabel("<html><b>This is help</b><br>First line<br>Second line</html>");
 
-		
-		JTextArea codeArea = new JTextArea();
+		DefaultSyntaxKit.initKit();
+
+		final JEditorPane codeArea = new JEditorPane();
+		JScrollPane codeAreaS = new JScrollPane(codeArea);
 		codeArea.setMinimumSize(new Dimension(100,codeArea.getFont().getSize()*20));
-		
+		codeArea.setContentType("text/java");
+		codeArea.setText("public static void main(String[] args) {\n}");
+
 		/* Layouts*/
 		GroupLayout layout = new GroupLayout(panel);
 		panel.setLayout(layout);
@@ -126,7 +133,7 @@ public class Laby extends JFrame implements KeyListener{
                                         .addComponent(languageChooser)
                                         .addComponent(levelChooser))
                         )
-                        .addComponent(codeArea)
+                        .addComponent(codeAreaS)
                         .addComponent(feedBackS))
         );
 		
@@ -144,7 +151,7 @@ public class Laby extends JFrame implements KeyListener{
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(levelMap)
                         .addGroup(layout.createSequentialGroup()
-                        .addComponent(codeArea)
+                        .addComponent(codeAreaS)
                         .addComponent(feedBackS)))
         );
 
@@ -157,7 +164,15 @@ public class Laby extends JFrame implements KeyListener{
 	}
 
 	public static void main(String[] args) {
-		new Laby().setVisible(true);
+//		new Laby().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                new Laby().setVisible(true);
+            }
+        });
+
 	}
 
     @Override
