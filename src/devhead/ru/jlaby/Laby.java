@@ -18,7 +18,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 /**
  * jLaby according by laby
@@ -26,7 +28,7 @@ import javax.swing.JTextArea;
  * @author Kuznetsov Andrey
  * 
  */
-public class Laby extends JFrame implements KeyListener, ActionListener{
+public class Laby extends JFrame implements KeyListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -94,6 +96,9 @@ public class Laby extends JFrame implements KeyListener, ActionListener{
 		JTextArea feedBack =  new JTextArea();
 		feedBack.enableInputMethods(false);
 		feedBack.setMinimumSize(new Dimension(100,feedBack.getFont().getSize()*15));
+        JScrollPane feedBackS = new JScrollPane(feedBack, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        feedBackS.setAutoscrolls(true);
 		levelMap = new LevelMap("data/levels/1c.laby", feedBack);
 		
 		JLabel helpArea = new JLabel("<html><b>This is help</b><br>First line<br>Second line</html>");
@@ -122,7 +127,7 @@ public class Laby extends JFrame implements KeyListener, ActionListener{
                                         .addComponent(levelChooser))
                         )
                         .addComponent(codeArea)
-                        .addComponent(feedBack))
+                        .addComponent(feedBackS))
         );
 		
         layout.setVerticalGroup(layout.createSequentialGroup()
@@ -140,7 +145,7 @@ public class Laby extends JFrame implements KeyListener, ActionListener{
                         .addComponent(levelMap)
                         .addGroup(layout.createSequentialGroup()
                         .addComponent(codeArea)
-                        .addComponent(feedBack)))
+                        .addComponent(feedBackS)))
         );
 
 		this.setContentPane(panel);
@@ -165,7 +170,10 @@ public class Laby extends JFrame implements KeyListener, ActionListener{
         }
         if (key.getKeyCode() == KeyEvent.VK_UP) {
             levelMap.forward();
-        }      
+        }   
+        if (key.getKeyCode() == KeyEvent.VK_SPACE) {
+            levelMap.take();
+        }
     }
 
     @Override
@@ -176,12 +184,6 @@ public class Laby extends JFrame implements KeyListener, ActionListener{
 
     @Override
     public void keyTyped(KeyEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent arg0) {
         // TODO Auto-generated method stub
         
     }

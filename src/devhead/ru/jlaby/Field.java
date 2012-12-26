@@ -17,9 +17,12 @@ public class Field {
 	private boolean rock;
 	public static int dim = 32;
 
-	public Field(String type) {
-		this.setType(type);
-	}
+    public Field(String type) {
+        ant = false;
+        obstacle = false;
+        rock = false;
+        this.setType(type);
+    }
 
 	/**
 	 * @return the type
@@ -36,9 +39,6 @@ public class Field {
 	    String filePathBG = null;
 	    String filePathMG = null;
 	    String filePathFG = null;
-		ant = false;
-		obstacle = false;
-		rock = false;
 		this.type = type;
 		if (type.equals(".")) {
 			filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
@@ -84,20 +84,44 @@ public class Field {
 		}
         if (filePathBG != null) {
             imageIconBG = new ImageIcon(filePathBG);
-        } else {
-            imageIconBG = null;
         }
         if (filePathMG != null) {
             imageIconMG = new ImageIcon(filePathMG);
-        } else {
-            imageIconMG = null;
         }
         if (filePathFG != null) {
             imageIconFG = new ImageIcon(filePathFG);
-        } else {
-            imageIconFG = null;
         }
 	}
+	
+    public void setFG(ImageIcon imageIconFG) {
+        this.imageIconFG = imageIconFG;
+    }
+
+    public void setMG(ImageIcon imageIconMG) {
+        this.imageIconMG = imageIconMG;
+    }
+
+    public void setBG(ImageIcon imageIconBG) {
+        this.imageIconBG = imageIconBG;
+    }
+
+    public ImageIcon delFG() {
+        ImageIcon delImg = imageIconFG;
+        imageIconFG = null;
+        return delImg;
+    }
+
+    public ImageIcon delMG() {
+        ImageIcon delImg = imageIconMG;
+        imageIconMG = null;
+        return delImg;
+    }
+
+    public ImageIcon delBG() {
+        ImageIcon delImg = imageIconBG;
+        imageIconBG = null;
+        return delImg;
+    }
 
 	/**
 	 * Draw the Field
@@ -127,6 +151,15 @@ public class Field {
 	public boolean isRock() {
 		return rock;
 	}
+	
+	   /**
+     * @return the rock
+     */
+    public void setRock(boolean rock) {
+        this.rock = rock;
+        this.obstacle = rock;
+    }
+    
 	
 	/**
 	 * @return the obstacle

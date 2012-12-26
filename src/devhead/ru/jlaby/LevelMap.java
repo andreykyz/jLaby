@@ -70,6 +70,7 @@ public class LevelMap extends JComponent implements Ant {
 			e.printStackTrace();
 		}
         feedBack.insert("I'm ready.\n", 0);
+        feedBack.select(0,0);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -135,10 +136,13 @@ public class LevelMap extends JComponent implements Ant {
 		Field nextField = levelMap.get(nextPoint);
 		if (nextField.getType().equals("r")) {
 			feedBack.insert("I can't go through this rock.\n", 0);
+			feedBack.select(0,0);
         } else if (nextField.getType().equals("o")) {
             feedBack.insert("I can't go through this the wall.\n", 0);
+            feedBack.select(0,0);
         } else if (nextField.getType().equals("x")) {
             feedBack.insert("I can't go through this the door.\n", 0);
+            feedBack.select(0,0);
         } else {
 			levelMap.remove(nextPoint);
 			levelMap.remove(antPosition);
@@ -149,11 +153,33 @@ public class LevelMap extends JComponent implements Ant {
 		this.repaint();
 	}
 
-	@Override
-	public void take() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void take() {
+        Field antField = levelMap.get(antPosition);
+        Point checkPosition = null;
+        if (antField.getType().equals("→")) {
+            checkPosition = new Point(antPosition.x + 1, antPosition.y);
+        } else if (antField.getType().equals("←")) {
+            checkPosition = new Point(antPosition.x - 1, antPosition.y);
+        } else if (antField.getType().equals("↑")) {
+            checkPosition = new Point(antPosition.x, antPosition.y - 1);
+        } else if (antField.getType().equals("↓")) {
+            checkPosition = new Point(antPosition.x, antPosition.y + 1);
+        }
+        Field checkField = levelMap.get(checkPosition);
+        if (antField.isRock()){
+            feedBack.insert("I can't take one more rock.\n", 0);
+            feedBack.select(0,0);
+        } else if (!checkField.isRock()) {
+            feedBack.insert("There's no rock to take here.\n", 0);
+            feedBack.select(0,0);
+        } else {
+            antField.setRock(true);
+            antField.setFG(checkField.delFG());
+            checkField.setType(".");
+        }
+        this.repaint();
+    }
 
 	@Override
 	public void drop() {
