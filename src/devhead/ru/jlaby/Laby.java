@@ -3,6 +3,7 @@ package devhead.ru.jlaby;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -15,6 +16,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
 
 /**
@@ -23,7 +25,7 @@ import javax.swing.JTextArea;
  * @author Kuznetsov Andrey
  * 
  */
-public class Laby extends JFrame {
+public class Laby extends JFrame implements KeyListener, ActionListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,6 +35,9 @@ public class Laby extends JFrame {
 	
 	final static String LEVEL_PATH = "data/levels";
 	final static String IMAGES_PATH = "data/tiles";
+	
+	JRadioButtonMenuItem miSurvivor;
+	LevelMap levelMap;
 	
 	public Laby() {
 		final JFrame frame = this;
@@ -45,6 +50,9 @@ public class Laby extends JFrame {
 				System.exit(0);
 			}
 		});
+		
+		miSurvivor = new JRadioButtonMenuItem("Survivor mode");
+		
 		JMenuItem miAbout = new JMenuItem("About");
 		miAbout.addActionListener(new ActionListener() {
 			@Override
@@ -56,6 +64,7 @@ public class Laby extends JFrame {
 
 		JMenu mFile = new JMenu("File");
 		mFile.setMnemonic(KeyEvent.VK_F);
+		mFile.add(miSurvivor);
 		mFile.addSeparator();
 		mFile.add(miExit);
 
@@ -81,7 +90,7 @@ public class Laby extends JFrame {
 		JLabel levelLabel = new JLabel("Level:");
 		File[] arFiles = path.listFiles(filenamefilter);
 		JComboBox levelChooser = new JComboBox(arFiles);
-		LevelMap levelMap = new LevelMap("data/levels/1c.laby");
+		levelMap = new LevelMap("data/levels/1c.laby");
 //		JLabel levelMap = new JLabel("field");
 		
 		JLabel helpArea = new JLabel("<html><b>This is help</b><br>First line<br>Second line</html>");
@@ -131,10 +140,43 @@ public class Laby extends JFrame {
 		pack();
 		levelMap.repaint();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		addKeyListener(this);
+		setFocusable(true);
 	}
 
 	public static void main(String[] args) {
 		new Laby().setVisible(true);
 	}
+
+    @Override
+    public void keyPressed(KeyEvent key) {
+        if (key.getKeyCode() == KeyEvent.VK_LEFT) {
+            levelMap.left();
+        }
+        if (key.getKeyCode() == KeyEvent.VK_RIGHT) {
+            levelMap.right();
+        }
+        if (key.getKeyCode() == KeyEvent.VK_UP) {
+            levelMap.forward();
+        }      
+    }
+
+    @Override
+    public void keyReleased(KeyEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void keyTyped(KeyEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
 
 }
