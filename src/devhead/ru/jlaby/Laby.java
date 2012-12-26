@@ -90,7 +90,9 @@ public class Laby extends JFrame implements KeyListener, ActionListener{
 		JLabel levelLabel = new JLabel("Level:");
 		File[] arFiles = path.listFiles(filenamefilter);
 		JComboBox levelChooser = new JComboBox(arFiles);
-		levelMap = new LevelMap("data/levels/1c.laby");
+		JTextArea feedBack =  new JTextArea();
+		feedBack.enableInputMethods(false);
+		levelMap = new LevelMap("data/levels/1c.laby", feedBack);
 //		JLabel levelMap = new JLabel("field");
 		
 		JLabel helpArea = new JLabel("<html><b>This is help</b><br>First line<br>Second line</html>");
@@ -117,7 +119,8 @@ public class Laby extends JFrame implements KeyListener, ActionListener{
                                         .addComponent(languageChooser)
                                         .addComponent(levelChooser))
                         )
-                        .addComponent(codeArea))
+                        .addComponent(codeArea)
+                        .addComponent(feedBack))
         );
 		
         layout.setVerticalGroup(layout.createSequentialGroup()
@@ -133,7 +136,9 @@ public class Laby extends JFrame implements KeyListener, ActionListener{
                                 ))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(levelMap)
-                        .addComponent(codeArea))
+                        .addGroup(layout.createSequentialGroup()
+                        .addComponent(codeArea)
+                        .addComponent(feedBack)))
         );
 
 		this.setContentPane(panel);

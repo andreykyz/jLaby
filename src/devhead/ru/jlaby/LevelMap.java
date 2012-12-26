@@ -9,8 +9,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JTextArea;
 
 @SuppressWarnings("serial")
 public class LevelMap extends JComponent implements Ant {
@@ -18,8 +18,10 @@ public class LevelMap extends JComponent implements Ant {
 	private HashMap<Point, Field> levelMap;
 	private Dimension dimension;
 	private Point antPosition;
+	private JTextArea feedBack;
 
-	public LevelMap(String levelPath) {
+	public LevelMap(String levelPath, JTextArea feedBack) {
+	    this.feedBack = feedBack;
 	    LoadLevel(levelPath);
 	    this.setMinimumSize(new Dimension(600,400));
 	}
@@ -36,7 +38,6 @@ public class LevelMap extends JComponent implements Ant {
 		}
 		String line;
 		String flag = "";
-		int y = 0;
 		try {
 			while ((line = reader.readLine()) != null) {
 				if (line.contains("#")) {
@@ -68,15 +69,13 @@ public class LevelMap extends JComponent implements Ant {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+        feedBack.append("I'm ready.\n");
 	}
 	
 	public void paintComponent(Graphics g) {
 		for (int y = 0; y < dimension.height; y++) {
 			for (int x = 0; x < dimension.width; x++) {
-				ImageIcon imageIcon = levelMap.get(new Point(x, y)).getImageIcon();
-				imageIcon.paintIcon(this, g, x * imageIcon.getIconWidth(),
-						y * imageIcon.getIconHeight());
+                levelMap.get(new Point(x, y)).draw(this, g, x * 32, y * 32);
 			}
 		}
 	}
@@ -134,9 +133,13 @@ public class LevelMap extends JComponent implements Ant {
 			nextPoint = new Point(antPosition.x, antPosition.y + 1);
 		}
 		Field nextField = levelMap.get(nextPoint);
-		if (nextField.isObstacle()) {
-			/* need it say */
-		} else {
+		if (nextField.getType().equals("r")) {
+			feedBack.append("I can't go through this rock.\n");
+        } else if (nextField.getType().equals("o")) {
+            feedBack.append("I can't go through this the wall.\n");
+        } else if (nextField.getType().equals("x")) {
+            feedBack.append("I can't go through this the door.\n");
+        } else {
 			levelMap.remove(nextPoint);
 			levelMap.remove(antPosition);
 			levelMap.put(antPosition, nextField);
