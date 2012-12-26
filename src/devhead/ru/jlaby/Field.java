@@ -42,6 +42,9 @@ public class Field {
 		this.type = type;
 		if (type.equals(".")) {
 			filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
+			 ant = false;
+			 obstacle = false;
+			 rock = false;
 		} else if (type.equals("o")) {
 		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
 			filePathMG = "data/tiles/wall" + fileType;

@@ -181,10 +181,32 @@ public class LevelMap extends JComponent implements Ant {
         this.repaint();
     }
 
-	@Override
-	public void drop() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void drop() {
+        Field antField = levelMap.get(antPosition);
+        Point checkPosition = null;
+        if (antField.getType().equals("→")) {
+            checkPosition = new Point(antPosition.x + 1, antPosition.y);
+        } else if (antField.getType().equals("←")) {
+            checkPosition = new Point(antPosition.x - 1, antPosition.y);
+        } else if (antField.getType().equals("↑")) {
+            checkPosition = new Point(antPosition.x, antPosition.y - 1);
+        } else if (antField.getType().equals("↓")) {
+            checkPosition = new Point(antPosition.x, antPosition.y + 1);
+        }
+        Field checkField = levelMap.get(checkPosition);
+        if (!antField.isRock()) {
+            feedBack.insert("I have nothing to drop.\n", 0);
+            feedBack.select(0, 0);
+        } else if (checkField.isObstacle()){
+            feedBack.insert("I can't drop the rock here.\n", 0);
+            feedBack.select(0, 0);
+        } else {
+            antField.setRock(false);
+            antField.delFG();
+            checkField.setType("r");
+        }
+        this.repaint();
+    }
 
 }

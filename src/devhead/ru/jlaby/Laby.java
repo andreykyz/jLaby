@@ -164,7 +164,6 @@ public class Laby extends JFrame implements KeyListener{
 	}
 
 	public static void main(String[] args) {
-//		new Laby().setVisible(true);
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             @Override
