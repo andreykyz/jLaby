@@ -171,8 +171,11 @@ public class Laby extends JFrame implements KeyListener{
         if (key.getKeyCode() == KeyEvent.VK_UP) {
             levelMap.forward();
         }   
-        if (key.getKeyCode() == KeyEvent.VK_SPACE) {
+        if (key.getKeyCode() == KeyEvent.VK_SPACE | key.getKeyCode() == KeyEvent.VK_T) {
             levelMap.take();
+        }
+        if (key.getKeyCode() == KeyEvent.VK_D) {
+            levelMap.drop();
         }
     }
 
