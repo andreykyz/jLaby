@@ -19,7 +19,7 @@ public class LevelMap extends JComponent implements Ant {
 	private Dimension dimension;
 	private Point antPosition;
 	private JTextArea feedBack;
-
+	
 	public LevelMap(String levelPath, JTextArea feedBack) {
 	    this.feedBack = feedBack;
 	    LoadLevel(levelPath);
@@ -27,6 +27,8 @@ public class LevelMap extends JComponent implements Ant {
 	}
 
 	public void LoadLevel(String levelPath) {
+	    boolean oneWeb = false;
+	    boolean oneRock = false;
 		levelMap = new HashMap<Point, Field>();
 		dimension = new Dimension(0, 0);
 		BufferedReader reader = null;
@@ -54,7 +56,23 @@ public class LevelMap extends JComponent implements Ant {
 					int x;
 					for (x = 0; x < mapLine.length; x++) {
 						Point point = new Point(x, dimension.height);
-						levelMap.put(point, new Field(mapLine[x]));
+						if (mapLine[x].equals("R")) {
+						    if (oneRock) {
+						        levelMap.put(point, new Field("r"));
+						    } else {
+						        levelMap.put(point, new Field("R"));
+	                            oneRock = true;
+						    }
+						} if (mapLine[x].equals("W")) {
+						    if (oneWeb) {
+						        levelMap.put(point, new Field("w"));
+						    } else {
+						        levelMap.put(point, new Field("W"));
+	                            oneWeb = true;
+						    }
+                        } else {
+						    levelMap.put(point, new Field(mapLine[x]));
+						}
 						if (levelMap.get(point).isAnt()) {
 							antPosition = point;
 						}
@@ -135,7 +153,10 @@ public class LevelMap extends JComponent implements Ant {
 			nextPoint = new Point(antPosition.x, antPosition.y + 1);
 		}
 		Field nextField = levelMap.get(nextPoint);
-		if (nextField.getType().equals("r")) {
+        if (antField.isWeb()) {
+            feedBack.insert("I can't move anymore.\n", 0);
+            feedBack.select(0,0);
+        } else if (nextField.getType().equals("r")) {
 			feedBack.insert("I can't go through this rock.\n", 0);
 			feedBack.select(0,0);
         } else if (nextField.getType().equals("o")) {
@@ -144,6 +165,17 @@ public class LevelMap extends JComponent implements Ant {
         } else if (nextField.getType().equals("x")) {
             feedBack.insert("I can't go through this the door.\n", 0);
             feedBack.select(0,0);
+        } else if (nextField.isWeb()) {
+            feedBack.insert("Oops, a spider web.", 0);
+            feedBack.select(0,0);
+            antField.setWeb(true);
+            antField.setFG(nextField.delMG());
+            nextField.setType(".");
+            levelMap.remove(nextPoint);
+            levelMap.remove(antPosition);
+            levelMap.put(antPosition, nextField);
+            levelMap.put(nextPoint, antField);
+            antPosition = nextPoint;
         } else {
 			levelMap.remove(nextPoint);
 			levelMap.remove(antPosition);
@@ -202,6 +234,12 @@ public class LevelMap extends JComponent implements Ant {
         } else if (checkField.isObstacle()){
             feedBack.insert("I can't drop the rock here.\n", 0);
             feedBack.select(0, 0);
+        } else if (checkField.isWeb()) {
+            antField.setRock(false);
+            checkField.setWeb(false);
+            antField.delFG();
+            checkField.setType("W");
+            checkField.setType("r");
         } else {
             antField.setRock(false);
             antField.delFG();

@@ -15,6 +15,7 @@ public class Field {
 	private boolean ant;
 	private boolean obstacle;
 	private boolean rock;
+	private boolean web;
 	public static int dim = 32;
 
     public Field(String type) {
@@ -60,7 +61,8 @@ public class Field {
 		} else if (type.equals("w")) {
 		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
 			filePathMG = "data/tiles/web" + fileType;
-			obstacle = true;
+			obstacle = false;
+			web = true;
 		} else if (type.equals("W")) {
 		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
 			filePathMG = "data/tiles/nweb" + fileType;
@@ -170,5 +172,19 @@ public class Field {
 	public boolean isObstacle() {
 		return obstacle;
 	}
+
+    /**
+     * @return the web
+     */
+    public boolean isWeb() {
+        return web;
+    }
+
+    /**
+     * @param web the web to set
+     */
+    public void setWeb(boolean web) {
+        this.web = web;
+    }
 
 }
