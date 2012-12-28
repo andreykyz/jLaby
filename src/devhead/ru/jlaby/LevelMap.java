@@ -100,9 +100,10 @@ public class LevelMap extends JComponent implements Ant {
         Dimension rv = null;
         rv = this.getSize(rv);
 		for (int y = 0; y < dimension.height; y++) {
-			for (int x = 0; x < dimension.width; x++) {
-                levelMap.get(new Point(x, y)).draw(this, g, x * Field.width, y * Field.height);
-			}
+            for (int x = 0; x < dimension.width; x++) {
+                levelMap.get(new Point(x, y)).draw(this, g, rv.width / 2 - dimension.width * Field.width / 2 + x * Field.width,
+                        rv.height / 2 - dimension.height * Field.height / 2 + y * Field.height);
+            }
 		}
 		if (end) {
             thumbUp.paintIcon(this, g,
