@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
 
@@ -19,7 +20,9 @@ public class LevelMap extends JComponent implements Ant {
 	private Dimension dimension;
 	private Point antPosition;
 	private JTextArea feedBack;
-	
+	private boolean end;
+	private static ImageIcon thumbUp = new ImageIcon(Laby.IMAGES_PATH + "/ThumbsUp" + Laby.FILE_TYPE);
+	   
 	public LevelMap(String levelPath, JTextArea feedBack) {
 	    this.feedBack = feedBack;
 	    LoadLevel(levelPath);
@@ -29,6 +32,7 @@ public class LevelMap extends JComponent implements Ant {
 	public void LoadLevel(String levelPath) {
 	    boolean oneWeb = false;
 	    boolean oneRock = false;
+	    end = false;
 		levelMap = new HashMap<Point, Field>();
 		dimension = new Dimension(0, 0);
 		BufferedReader reader = null;
@@ -93,15 +97,22 @@ public class LevelMap extends JComponent implements Ant {
 	}
 	
 	public void paintComponent(Graphics g) {
+        Dimension rv = null;
+        rv = this.getSize(rv);
 		for (int y = 0; y < dimension.height; y++) {
 			for (int x = 0; x < dimension.width; x++) {
-                levelMap.get(new Point(x, y)).draw(this, g, x * 32, y * 32);
+                levelMap.get(new Point(x, y)).draw(this, g, x * Field.width, y * Field.height);
 			}
+		}
+		if (end) {
+            thumbUp.paintIcon(this, g,
+                    (rv.width / 2) - (thumbUp.getIconWidth() / 2), (rv.height / 2) - (thumbUp.getIconHeight()) / 2);
 		}
 	}
 
 	@Override
 	public void right() {
+	    if (end) return;
 		Field antField = levelMap.get(antPosition);
 		if (antField.getType().equals("↑")) {
 			antField.setType("→");
@@ -117,6 +128,7 @@ public class LevelMap extends JComponent implements Ant {
 
 	@Override
 	public void left() {
+	    if (end) return;
 		Field antField = levelMap.get(antPosition);
 		if (antField.getType().equals("↑")) {
 			antField.setType("←");
@@ -135,6 +147,7 @@ public class LevelMap extends JComponent implements Ant {
  */
 	@Override
 	public void forward() {
+	    if (end) return;
 		Field antField = levelMap.get(antPosition);
 		Point nextPoint = null;
 /*      ------------> x
@@ -181,6 +194,7 @@ public class LevelMap extends JComponent implements Ant {
 			levelMap.remove(antPosition);
 			levelMap.put(antPosition, nextField);
 			levelMap.put(nextPoint, antField);
+			nextField.delMG();
 			antPosition = nextPoint;
 		}
 		this.repaint();
@@ -188,6 +202,7 @@ public class LevelMap extends JComponent implements Ant {
 
     @Override
     public void take() {
+        if (end) return;
         Field antField = levelMap.get(antPosition);
         Point checkPosition = null;
         if (antField.getType().equals("→")) {
@@ -216,6 +231,7 @@ public class LevelMap extends JComponent implements Ant {
 
     @Override
     public void drop() {
+        if (end) return;
         Field antField = levelMap.get(antPosition);
         Point checkPosition = null;
         if (antField.getType().equals("→")) {
@@ -250,8 +266,38 @@ public class LevelMap extends JComponent implements Ant {
 
     @Override
     public void escape() {
-        // TODO Auto-generated method stub
-        
+        if (end) return;
+        Field antField = levelMap.get(antPosition);
+        Point checkPosition = null;
+        if (antField.getType().equals("→")) {
+            checkPosition = new Point(antPosition.x + 1, antPosition.y);
+        } else if (antField.getType().equals("←")) {
+            checkPosition = new Point(antPosition.x - 1, antPosition.y);
+        } else if (antField.getType().equals("↑")) {
+            checkPosition = new Point(antPosition.x, antPosition.y - 1);
+        } else if (antField.getType().equals("↓")) {
+            checkPosition = new Point(antPosition.x, antPosition.y + 1);
+        }
+        Field checkField = levelMap.get(checkPosition);
+        if (!checkField.getType().equals("x")) {
+            feedBack.insert("I can't find a door to open.\n", 0);
+            feedBack.select(0, 0);
+        } else if (antField.isRock()) {
+            feedBack.insert("I can't go out carrying a rock.\n", 0);
+            feedBack.select(0, 0);
+        } else {
+            feedBack.insert("Wohoo, the exit!\n", 0);
+            feedBack.select(0, 0);
+            levelMap.remove(checkPosition);
+            levelMap.remove(antPosition);
+            levelMap.put(antPosition, checkField);
+            levelMap.put(checkPosition, antField);
+            antField.setFG(antField.delMG());
+            antField.setMG(checkField.delMG());
+            antPosition = checkPosition;
+            end = true;
+        }
+        this.repaint();
     }
 
 }

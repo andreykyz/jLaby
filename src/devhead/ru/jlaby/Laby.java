@@ -43,7 +43,8 @@ public class Laby extends JFrame implements KeyListener{
 	
 	final static String LEVEL_PATH = "data/levels";
 	final static String IMAGES_PATH = "data/tiles";
-	
+	final static String FILE_TYPE = ".png";
+	   
 	JRadioButtonMenuItem miSurvivor;
 	LevelMap levelMap;
 	final JEditorPane codeArea;

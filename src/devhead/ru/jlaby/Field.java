@@ -8,7 +8,6 @@ import javax.swing.ImageIcon;
 public class Field {
 
 	private String type;
-	private String fileType = ".png";
 	private ImageIcon imageIconBG; // back ground
 	private ImageIcon imageIconMG; // middle ground
 	private ImageIcon imageIconFG; // fore ground
@@ -16,8 +15,9 @@ public class Field {
 	private boolean obstacle;
 	private boolean rock;
 	private boolean web;
-	public static int dim = 32;
-
+	final public static int width = 32;
+	final public static int height = 32;
+	
     public Field(String type) {
         ant = false;
         obstacle = false;
@@ -42,49 +42,49 @@ public class Field {
 	    String filePathFG = null;
 		this.type = type;
 		if (type.equals(".")) {
-			filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
+			filePathBG = Laby.IMAGES_PATH + "/void" + Laby.FILE_TYPE;
 			 ant = false;
 			 obstacle = false;
 			 rock = false;
 		} else if (type.equals("o")) {
-		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
-			filePathMG = "data/tiles/wall" + fileType;
+		    filePathBG = Laby.IMAGES_PATH + "/void" + Laby.FILE_TYPE;
+			filePathMG = "data/tiles/wall" + Laby.FILE_TYPE;
 			obstacle = true;
 		} else if (type.equals("r")) {
-		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
-			filePathFG = "data/tiles/rock" + fileType;
+		    filePathBG = Laby.IMAGES_PATH + "/void" + Laby.FILE_TYPE;
+			filePathFG = "data/tiles/rock" + Laby.FILE_TYPE;
 			obstacle = true;
 			rock = true;
 		} else if (type.equals("R")) {
-		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
-			filePathMG = "data/tiles/nrock" + fileType;
+		    filePathBG = Laby.IMAGES_PATH + "/void" + Laby.FILE_TYPE;
+			filePathMG = "data/tiles/nrock" + Laby.FILE_TYPE;
 		} else if (type.equals("w")) {
-		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
-			filePathMG = "data/tiles/web" + fileType;
+		    filePathBG = Laby.IMAGES_PATH + "/void" + Laby.FILE_TYPE;
+			filePathMG = "data/tiles/web" + Laby.FILE_TYPE;
 			obstacle = false;
 			web = true;
 		} else if (type.equals("W")) {
-		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
-			filePathMG = "data/tiles/nweb" + fileType;
+		    filePathBG = Laby.IMAGES_PATH + "/void" + Laby.FILE_TYPE;
+			filePathMG = "data/tiles/nweb" + Laby.FILE_TYPE;
 		} else if (type.equals("x")) {
-		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
-			filePathMG = "data/tiles/exit" + fileType;
+		    filePathBG = Laby.IMAGES_PATH + "/void" + Laby.FILE_TYPE;
+			filePathMG = "data/tiles/exit" + Laby.FILE_TYPE;
 			obstacle = true;
 		} else if (type.equals("↑")) {
-		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
-			filePathMG = "data/tiles/ant-n" + fileType;
+		    filePathBG = Laby.IMAGES_PATH + "/void" + Laby.FILE_TYPE;
+			filePathMG = "data/tiles/ant-n" + Laby.FILE_TYPE;
 			ant = true;
 		} else if (type.equals("↓")) {
-		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
-			filePathMG = "data/tiles/ant-s" + fileType;
+		    filePathBG = Laby.IMAGES_PATH + "/void" + Laby.FILE_TYPE;
+			filePathMG = "data/tiles/ant-s" + Laby.FILE_TYPE;
 			ant = true;
 		} else if (type.equals("←")) {
-		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
-			filePathMG = "data/tiles/ant-w" + fileType;
+		    filePathBG = Laby.IMAGES_PATH + "/void" + Laby.FILE_TYPE;
+			filePathMG = "data/tiles/ant-w" + Laby.FILE_TYPE;
 			ant = true;
 		} else if (type.equals("→")) {
-		    filePathBG = Laby.IMAGES_PATH + "/void" + fileType;
-			filePathMG = "data/tiles/ant-e" + fileType;
+		    filePathBG = Laby.IMAGES_PATH + "/void" + Laby.FILE_TYPE;
+			filePathMG = "data/tiles/ant-e" + Laby.FILE_TYPE;
 			ant = true;
 		}
         if (filePathBG != null) {
