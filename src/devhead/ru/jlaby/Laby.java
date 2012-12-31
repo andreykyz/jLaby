@@ -43,6 +43,7 @@ public class Laby extends JFrame implements KeyListener{
 	
 	final static String LEVEL_PATH = "data/levels";
 	final static String IMAGES_PATH = "data/tiles";
+	final static String MODS_PATH = "data/mods";
 	final static String FILE_TYPE = ".png";
 	   
 	JRadioButtonMenuItem miSurvivor;
@@ -109,7 +110,7 @@ public class Laby extends JFrame implements KeyListener{
 		};
 		File path = new File(Laby.LEVEL_PATH);// + Laby.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 		JLabel languageLabel = new JLabel("Language:");
-		String[] language = {"C", "Python", "Java"};
+		String[] language = {"C"};
 		JComboBox languageChooser = new JComboBox(language);
 		JLabel levelLabel = new JLabel("Level:");
 		File[] arFiles = path.listFiles(filenamefilter);

@@ -112,7 +112,7 @@ public class LevelMap extends JComponent implements Ant {
 	}
 
 	@Override
-	public void right() {
+	public synchronized void right() {
 	    if (end) return;
 		Field antField = levelMap.get(antPosition);
 		if (antField.getType().equals("↑")) {
@@ -128,7 +128,7 @@ public class LevelMap extends JComponent implements Ant {
 	}
 
 	@Override
-	public void left() {
+	public synchronized void left() {
 	    if (end) return;
 		Field antField = levelMap.get(antPosition);
 		if (antField.getType().equals("↑")) {
@@ -147,7 +147,7 @@ public class LevelMap extends JComponent implements Ant {
  * Calculate next position and is doing step if possible.
  */
 	@Override
-	public void forward() {
+	public synchronized void forward() {
 	    if (end) return;
 		Field antField = levelMap.get(antPosition);
 		Point nextPoint = null;
@@ -202,7 +202,7 @@ public class LevelMap extends JComponent implements Ant {
 	}
 
     @Override
-    public void take() {
+    public synchronized void take() {
         if (end) return;
         Field antField = levelMap.get(antPosition);
         Point checkPosition = null;
@@ -231,7 +231,7 @@ public class LevelMap extends JComponent implements Ant {
     }
 
     @Override
-    public void drop() {
+    public synchronized void drop() {
         if (end) return;
         Field antField = levelMap.get(antPosition);
         Point checkPosition = null;
@@ -266,7 +266,7 @@ public class LevelMap extends JComponent implements Ant {
     }
 
     @Override
-    public void escape() {
+    public synchronized void escape() {
         if (end) return;
         Field antField = levelMap.get(antPosition);
         Point checkPosition = null;
