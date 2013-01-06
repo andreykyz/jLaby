@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -48,11 +50,22 @@ public class Laby extends JFrame implements KeyListener{
 	   
 	JRadioButtonMenuItem miSurvivor;
 	LevelMap levelMap;
+	JTextArea feedBack;
 	final JEditorPane codeArea;
 	
 	public Laby() {
 		final JFrame frame = this;
 		JPanel panel = new JPanel();
+		ActionListener startAction = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Thread(new ProgramRunner(codeArea, feedBack, levelMap, "c")).start();
+                
+            }
+            
+        };
+		
 		
 		JMenuItem miExit = new JMenuItem("Exit");
 		miExit.addActionListener(new ActionListener() {
@@ -78,6 +91,9 @@ public class Laby extends JFrame implements KeyListener{
 		    
 		});
 		
+		JMenuItem miStart = new JMenuItem("Start");
+		miStart.addActionListener(startAction);
+		
 		JMenuItem miAbout = new JMenuItem("About");
 		miAbout.addActionListener(new ActionListener() {
 			@Override
@@ -90,6 +106,7 @@ public class Laby extends JFrame implements KeyListener{
 		JMenu mFile = new JMenu("File");
 		mFile.setMnemonic(KeyEvent.VK_F);
 		mFile.add(miSurvivor);
+		mFile.add(miStart);
 		mFile.addSeparator();
 		mFile.add(miExit);
 
@@ -111,10 +128,10 @@ public class Laby extends JFrame implements KeyListener{
 		File path = new File(Laby.LEVEL_PATH);// + Laby.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 		JLabel languageLabel = new JLabel("Language:");
 		String[] language = {"C"};
-		JComboBox languageChooser = new JComboBox(language);
+		JComboBox<String> languageChooser = new JComboBox<String>(language);
 		JLabel levelLabel = new JLabel("Level:");
 		File[] arFiles = path.listFiles(filenamefilter);
-		JComboBox levelChooser = new JComboBox(arFiles);
+		JComboBox<File> levelChooser = new JComboBox<File>(arFiles);
 		levelChooser.addItemListener(new ItemListener() {
 
             @Override
@@ -131,7 +148,7 @@ public class Laby extends JFrame implements KeyListener{
             }
 		    
 		});
-		JTextArea feedBack =  new JTextArea();
+		feedBack =  new JTextArea();
 		feedBack.enableInputMethods(false);
 		feedBack.setMinimumSize(new Dimension(100,feedBack.getFont().getSize()*15));
         JScrollPane feedBackS = new JScrollPane(feedBack, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -148,6 +165,14 @@ public class Laby extends JFrame implements KeyListener{
 		codeArea.setMinimumSize(new Dimension(100,codeArea.getFont().getSize()*20));
 		codeArea.setContentType("text/java");
 		codeArea.setText("public static void main(String[] args) {\n}");
+		
+        JButton playButton = new JButton(new ImageIcon("data/buttons/single_arrows_play.png"));
+        playButton.addActionListener(startAction);
+		JButton forwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_right.png"));
+		JButton backwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_left.png"));
+	    JButton fastForwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_right.png"));
+	    JButton fastBackwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_left.png"));
+	    JButton resetButton = new JButton(new ImageIcon("data/buttons/Spinaround.png"));
 
 		/* Layouts*/
 		GroupLayout layout = new GroupLayout(panel);
