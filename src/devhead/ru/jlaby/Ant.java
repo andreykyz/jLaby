@@ -1,11 +1,17 @@
 package devhead.ru.jlaby;
+
 /**
  * 
  * @author Kuznetsov Andrey
  *
  */
+
 public interface Ant {
 
+    enum tile {
+        Void, Wall, Rock, Web, Exit, Unknown
+    };
+    
 	public void right();
 
 	public void left();
@@ -15,6 +21,8 @@ public interface Ant {
 	public void take();
 
 	public void drop();
+	
+	public Enum<tile> look();
 	
 	public void escape();
 

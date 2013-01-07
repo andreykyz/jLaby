@@ -18,11 +18,11 @@ public class LevelMap extends JComponent implements Ant {
 
 	private HashMap<Point, Field> levelMap;
 	private Dimension dimension;
-	private Point antPosition;
-	private JTextArea feedBack;
-	private boolean end;
-	private static ImageIcon thumbUp = new ImageIcon(Laby.IMAGES_PATH + "/ThumbsUp" + Laby.FILE_TYPE);
-	   
+    private Point antPosition;
+    private JTextArea feedBack;
+    private boolean end;
+    private static ImageIcon thumbUp = new ImageIcon(Laby.IMAGES_PATH + "/ThumbsUp" + Laby.FILE_TYPE);
+
 	public LevelMap(String levelPath, JTextArea feedBack) {
 	    this.feedBack = feedBack;
 	    LoadLevel(levelPath);
@@ -299,6 +299,35 @@ public class LevelMap extends JComponent implements Ant {
             end = true;
         }
         this.repaint();
+    }
+
+    @Override
+    public Enum<tile> look() {
+        Field antField = levelMap.get(antPosition);
+        Point checkPosition = null;
+        if (antField.getType().equals("→")) {
+            checkPosition = new Point(antPosition.x + 1, antPosition.y);
+        } else if (antField.getType().equals("←")) {
+            checkPosition = new Point(antPosition.x - 1, antPosition.y);
+        } else if (antField.getType().equals("↑")) {
+            checkPosition = new Point(antPosition.x, antPosition.y - 1);
+        } else if (antField.getType().equals("↓")) {
+            checkPosition = new Point(antPosition.x, antPosition.y + 1);
+        }
+        Field checkField = levelMap.get(checkPosition);
+        if (checkField.getType().equals("r")) {
+            return tile.Rock;
+        }
+        if (checkField.getType().equals("x")) {
+            return tile.Exit;
+        }
+        if (checkField.getType().equals("o")) {
+            return tile.Wall;
+        }
+        if (checkField.getType().equals("w")) {
+            return tile.Web;
+        }
+        return tile.Void;
     }
 
 }
