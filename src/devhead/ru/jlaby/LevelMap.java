@@ -91,8 +91,7 @@ public class LevelMap extends JComponent implements Ant {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        feedBack.insert("I'm ready.\n", 0);
-        feedBack.select(0,0);
+        say("I'm ready.");
         this.repaint();
 	}
 	
@@ -168,20 +167,15 @@ public class LevelMap extends JComponent implements Ant {
 		}
 		Field nextField = levelMap.get(nextPoint);
         if (antField.isWeb()) {
-            feedBack.insert("I can't move anymore.\n", 0);
-            feedBack.select(0,0);
+            say("I can't move anymore.");
         } else if (nextField.getType().equals("r")) {
-			feedBack.insert("I can't go through this rock.\n", 0);
-			feedBack.select(0,0);
+            say("I can't go through this rock.");
         } else if (nextField.getType().equals("o")) {
-            feedBack.insert("I can't go through this the wall.\n", 0);
-            feedBack.select(0,0);
+            say("I can't go through this the wall.");
         } else if (nextField.getType().equals("x")) {
-            feedBack.insert("I can't go through this the door.\n", 0);
-            feedBack.select(0,0);
+            say("I can't go through this the door.");
         } else if (nextField.isWeb()) {
-            feedBack.insert("Oops, a spider web.", 0);
-            feedBack.select(0,0);
+            say("Oops, a spider web.");
             antField.setWeb(true);
             antField.setFG(nextField.delMG());
             nextField.setType(".");
@@ -217,11 +211,9 @@ public class LevelMap extends JComponent implements Ant {
         }
         Field checkField = levelMap.get(checkPosition);
         if (antField.isRock()){
-            feedBack.insert("I can't take one more rock.\n", 0);
-            feedBack.select(0,0);
+            say("I can't take one more rock.");
         } else if (!checkField.isRock()) {
-            feedBack.insert("There's no rock to take here.\n", 0);
-            feedBack.select(0,0);
+            say("There's no rock to take here.");
         } else {
             antField.setRock(true);
             antField.setFG(checkField.delFG());
@@ -246,11 +238,9 @@ public class LevelMap extends JComponent implements Ant {
         }
         Field checkField = levelMap.get(checkPosition);
         if (!antField.isRock()) {
-            feedBack.insert("I have nothing to drop.\n", 0);
-            feedBack.select(0, 0);
+            say("I have nothing to drop.");
         } else if (checkField.isObstacle()){
-            feedBack.insert("I can't drop the rock here.\n", 0);
-            feedBack.select(0, 0);
+            say("I can't drop the rock here.");
         } else if (checkField.isWeb()) {
             antField.setRock(false);
             checkField.setWeb(false);
@@ -281,14 +271,11 @@ public class LevelMap extends JComponent implements Ant {
         }
         Field checkField = levelMap.get(checkPosition);
         if (!checkField.getType().equals("x")) {
-            feedBack.insert("I can't find a door to open.\n", 0);
-            feedBack.select(0, 0);
+            say("I can't find a door to open.");
         } else if (antField.isRock()) {
-            feedBack.insert("I can't go out carrying a rock.\n", 0);
-            feedBack.select(0, 0);
+            say("I can't go out carrying a rock.");
         } else {
-            feedBack.insert("Wohoo, the exit!\n", 0);
-            feedBack.select(0, 0);
+            say("Wohoo, the exit!");
             levelMap.remove(checkPosition);
             levelMap.remove(antPosition);
             levelMap.put(antPosition, checkField);
@@ -328,6 +315,12 @@ public class LevelMap extends JComponent implements Ant {
             return tile.Web;
         }
         return tile.Void;
+    }
+
+    @Override
+    public void say(String say) {
+        feedBack.insert(say + "\n", 0);
+        feedBack.select(0, 0);
     }
 
 }

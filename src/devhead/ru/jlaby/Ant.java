@@ -24,6 +24,8 @@ public interface Ant {
 	
 	public Enum<tile> look();
 	
+	public void say(String say);
+	
 	public void escape();
 
 }
