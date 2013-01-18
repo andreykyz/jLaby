@@ -166,10 +166,10 @@ public class Laby extends JFrame implements KeyListener{
 		codeArea.setContentType("text/java");
 		codeArea.setText("public static void main(String[] args) {\n}");
 		
-        JButton playButton = new JButton(new ImageIcon("data/buttons/single_arrows_play.png"));
+        JButton forwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_play.png"));
+		JButton playButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_right.png"));
         playButton.addActionListener(startAction);
-		JButton forwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_right.png"));
-		JButton backwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_left.png"));
+		JButton backwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_play_left.png"));
 	    JButton fastForwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_right.png"));
 	    JButton fastBackwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_left.png"));
 	    JButton resetButton = new JButton(new ImageIcon("data/buttons/Spinaround.png"));
@@ -194,6 +194,10 @@ public class Laby extends JFrame implements KeyListener{
                                         .addComponent(levelChooser))
                         )
                         .addComponent(codeAreaS)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(backwardButton)
+                                .addComponent(resetButton)
+                                .addComponent(forwardButton))
                         .addComponent(feedBackS))
         );
 		
@@ -212,6 +216,10 @@ public class Laby extends JFrame implements KeyListener{
                         .addComponent(levelMap)
                         .addGroup(layout.createSequentialGroup()
                         .addComponent(codeAreaS)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(backwardButton)
+                                .addComponent(resetButton)
+                                .addComponent(forwardButton))
                         .addComponent(feedBackS)))
         );
 
