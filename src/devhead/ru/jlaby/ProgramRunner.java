@@ -13,7 +13,7 @@ import java.util.Arrays;
 import javax.swing.JEditorPane;
 import javax.swing.JTextArea;
 
-public class ProgramRunner implements Runnable {
+public class ProgramRunner {
     
     private String gameType;
     private JTextArea feedBack;
@@ -25,10 +25,7 @@ public class ProgramRunner implements Runnable {
         this.feedBack = feedBack;
         this.gameType = gameType;
         this.levelMap = levelMap;
-    }
 
-    @Override
-    public void run() {
         try {
             buildLib();
         } catch (FileNotFoundException e) {
@@ -68,17 +65,37 @@ public class ProgramRunner implements Runnable {
     private void buildGame() throws IOException {
         BufferedReader reader = null;
         reader = new BufferedReader(new FileReader(Laby.MODS_PATH + "/" + gameType + "/build"));
-        String[] commandLine = reader.readLine().split(" ");
-        reader.close();
-        ProcessBuilder pb = new ProcessBuilder(Arrays.asList(commandLine));
-        pb.directory(new File(Laby.MODS_PATH + "/" + gameType));
-        pb.redirectErrorStream(true);
-        Process process = pb.start();
-        BufferedReader stdIn = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String s;
-        while ((s = stdIn.readLine()) != null) {
+        String commandLine;
+        while ((commandLine = reader.readLine()) != null) {
+            ProcessBuilder pb = new ProcessBuilder(Arrays.asList(commandLine.split(" ")));
+            pb.directory(new File(Laby.MODS_PATH + "/" + gameType));
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+            BufferedReader stdIn = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String s;
+            while ((s = stdIn.readLine()) != null) {
                 System.out.println(s);
+            }
         }
+        reader.close();
     }
- 
+    
+    public Process startGame() {
+        BufferedReader reader = null;
+        Process process = null;
+        try {
+            reader = new BufferedReader(new FileReader(Laby.MODS_PATH + "/" + gameType + "/start"));
+            String[] commandLine = reader.readLine().split(" ");
+            reader.close();
+            ProcessBuilder pb = new ProcessBuilder(Arrays.asList(commandLine));
+            pb.directory(new File(Laby.MODS_PATH + "/" + gameType));
+            pb.redirectErrorStream(true);
+            process = pb.start();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return process;
+    }
+
 }

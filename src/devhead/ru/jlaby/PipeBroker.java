@@ -1,9 +1,20 @@
 package devhead.ru.jlaby;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
 public class PipeBroker {
 
-    public PipeBroker() {
-        // TODO Auto-generated constructor stub
+    private Ant ant;
+    BufferedReader stdIn;
+    BufferedWriter stdOut;
+
+    public PipeBroker(Process process, Ant ant) {
+        this.ant = ant;
+        stdIn = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        stdOut = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
     }
     
     public void play() {
