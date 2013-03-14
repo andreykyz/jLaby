@@ -50,22 +50,32 @@ public class Laby extends JFrame implements KeyListener{
 	   
 	JRadioButtonMenuItem miSurvivor;
 	LevelMap levelMap;
+	PipeBroker broker;
 	JTextArea feedBack;
 	final JEditorPane codeArea;
 	
 	public Laby() {
 		final JFrame frame = this;
 		JPanel panel = new JPanel();
-		ActionListener startAction = new ActionListener() {
+		ActionListener resetAction = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Thread(new ProgramRunner(codeArea, feedBack, levelMap, "c")).start();
-                
+                broker = new PipeBroker(new ProgramRunner(codeArea, feedBack, levelMap, "c").startGame(), levelMap);
+
             }
-            
+
+        };	
+        
+        ActionListener forwardAction = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                broker.forward();
+
+            }
+
         };
-		
 		
 		JMenuItem miExit = new JMenuItem("Exit");
 		miExit.addActionListener(new ActionListener() {
@@ -167,13 +177,16 @@ public class Laby extends JFrame implements KeyListener{
 		codeArea.setText("public static void main(String[] args) {\n}");
 		
         JButton forwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_play.png"));
+        forwardButton.addActionListener(forwardAction);
 		JButton playButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_right.png"));
-        playButton.addActionListener(startAction);
 		JButton backwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_play_left.png"));
 	    JButton fastForwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_right.png"));
 	    JButton fastBackwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_left.png"));
 	    JButton resetButton = new JButton(new ImageIcon("data/buttons/Spinaround.png"));
+	    resetButton.addActionListener(resetAction);
 
+	    
+	    
 		/* Layouts*/
 		GroupLayout layout = new GroupLayout(panel);
 		panel.setLayout(layout);
