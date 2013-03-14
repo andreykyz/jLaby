@@ -1,0 +1,2 @@
+gcc -c -I./lib program.c
+gcc -Wall -I./lib lib/robot.o program.o -o program

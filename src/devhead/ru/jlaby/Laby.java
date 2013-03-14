@@ -61,8 +61,9 @@ public class Laby extends JFrame implements KeyListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                levelMap.reset();
                 broker = new PipeBroker(new ProgramRunner(codeArea, feedBack, levelMap, "c").startGame(), levelMap);
-
+                frame.repaint();
             }
 
         };	
@@ -102,7 +103,7 @@ public class Laby extends JFrame implements KeyListener{
 		});
 		
 		JMenuItem miStart = new JMenuItem("Start");
-		miStart.addActionListener(startAction);
+		miStart.addActionListener(resetAction);
 		
 		JMenuItem miAbout = new JMenuItem("About");
 		miAbout.addActionListener(new ActionListener() {

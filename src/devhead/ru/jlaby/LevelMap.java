@@ -22,12 +22,18 @@ public class LevelMap extends JComponent implements Ant {
     private JTextArea feedBack;
     private boolean end;
     private static ImageIcon thumbUp = new ImageIcon(Laby.IMAGES_PATH + "/ThumbsUp" + Laby.FILE_TYPE);
-
+    private String levelPath;
+    
 	public LevelMap(String levelPath, JTextArea feedBack) {
 	    this.feedBack = feedBack;
+	    this.levelPath = levelPath;
 	    LoadLevel(levelPath);
 	    this.setMinimumSize(new Dimension(600,400));
 	}
+	
+    public void reset() {
+        LoadLevel(levelPath);
+    }
 
 	public void LoadLevel(String levelPath) {
 	    boolean oneWeb = false;
