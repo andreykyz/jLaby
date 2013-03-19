@@ -181,8 +181,8 @@ public class Laby extends JFrame implements KeyListener{
         forwardButton.addActionListener(forwardAction);
 		JButton playButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_right.png"));
 		JButton backwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_play_left.png"));
-	    JButton fastForwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_right.png"));
-	    JButton fastBackwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_left.png"));
+	    JButton fastForwardButton = new JButton(new ImageIcon("data/buttons/green_double_arrows_right.png"));
+	    JButton fastBackwardButton = new JButton(new ImageIcon("data/buttons/green_double_arrows_left.png"));
 	    JButton resetButton = new JButton(new ImageIcon("data/buttons/Spinaround.png"));
 	    resetButton.addActionListener(resetAction);
 
@@ -211,7 +211,9 @@ public class Laby extends JFrame implements KeyListener{
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(backwardButton)
                                 .addComponent(resetButton)
-                                .addComponent(forwardButton))
+                                .addComponent(forwardButton)
+                                .addComponent(playButton)
+                                .addComponent(fastForwardButton))
                         .addComponent(feedBackS))
         );
 		
@@ -233,7 +235,9 @@ public class Laby extends JFrame implements KeyListener{
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(backwardButton)
                                 .addComponent(resetButton)
-                                .addComponent(forwardButton))
+                                .addComponent(forwardButton)
+                                .addComponent(playButton)
+                                .addComponent(fastForwardButton))
                         .addComponent(feedBackS)))
         );
 
