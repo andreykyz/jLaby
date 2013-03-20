@@ -26,6 +26,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.Timer;
 
 import jsyntaxpane.DefaultSyntaxKit;
 
@@ -53,6 +54,10 @@ public class Laby extends JFrame implements KeyListener{
 	PipeBroker broker;
 	JTextArea feedBack;
 	final JEditorPane codeArea;
+
+    private Timer slowTimer;
+
+    private Timer fastTimer;
 	
 	public Laby() {
 		final JFrame frame = this;
@@ -77,6 +82,42 @@ public class Laby extends JFrame implements KeyListener{
             }
 
         };
+        
+        ActionListener playAction = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                slowTimer.start();
+
+            }
+
+        };
+        
+        ActionListener fastForwardAction = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fastTimer.start();
+
+            }
+
+        };
+        
+        ActionListener slowTaskPerformer = new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                //...Perform a task...
+            }
+        };
+        
+        slowTimer = new Timer(2000, slowTaskPerformer);     
+        
+        ActionListener fastTaskPerformer = new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                //...Perform a task...
+            }
+        };
+        
+        fastTimer = new Timer(500, fastTaskPerformer);
 		
 		JMenuItem miExit = new JMenuItem("Exit");
 		miExit.addActionListener(new ActionListener() {
@@ -180,8 +221,10 @@ public class Laby extends JFrame implements KeyListener{
         JButton forwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_play.png"));
         forwardButton.addActionListener(forwardAction);
 		JButton playButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_right.png"));
+		playButton.addActionListener(playAction);
 		JButton backwardButton = new JButton(new ImageIcon("data/buttons/green_single_arrows_play_left.png"));
 	    JButton fastForwardButton = new JButton(new ImageIcon("data/buttons/green_double_arrows_right.png"));
+	    fastForwardButton.addActionListener(fastForwardAction);
 	    JButton fastBackwardButton = new JButton(new ImageIcon("data/buttons/green_double_arrows_left.png"));
 	    JButton resetButton = new JButton(new ImageIcon("data/buttons/Spinaround.png"));
 	    resetButton.addActionListener(resetAction);
