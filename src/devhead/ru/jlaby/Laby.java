@@ -8,13 +8,17 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.Reader;
 
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -119,6 +123,40 @@ public class Laby extends JFrame implements KeyListener{
         
         fastTimer = new Timer(500, fastTaskPerformer);
 		
+        JMenuItem miOpen = new JMenuItem("Open");
+        miOpen.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser c = new JFileChooser();
+                // Demonstrate "Open" dialog:
+                int rVal = c.showOpenDialog(Laby.this);
+                if (rVal == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        Reader reader = new FileReader(c.getSelectedFile());
+                        codeArea.read(reader, null);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+        
+        JMenuItem miSave = new JMenuItem("Save");
+        miSave.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser c = new JFileChooser();
+                // Demonstrate "Open" dialog:
+                int rVal = c.showSaveDialog(Laby.this);
+                if (rVal == JFileChooser.APPROVE_OPTION) {
+                    // TODO stumb
+                }
+            }
+        });
+        
 		JMenuItem miExit = new JMenuItem("Exit");
 		miExit.addActionListener(new ActionListener() {
 			@Override
@@ -157,6 +195,9 @@ public class Laby extends JFrame implements KeyListener{
 
 		JMenu mFile = new JMenu("File");
 		mFile.setMnemonic(KeyEvent.VK_F);
+        mFile.add(miOpen);
+        mFile.add(miSave);
+        mFile.addSeparator();
 		mFile.add(miSurvivor);
 		mFile.add(miStart);
 		mFile.addSeparator();
