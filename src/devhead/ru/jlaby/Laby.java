@@ -1,6 +1,7 @@
 package devhead.ru.jlaby;
 
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -9,9 +10,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -29,6 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
 
@@ -52,7 +56,8 @@ public class Laby extends JFrame implements KeyListener{
 	final static String IMAGES_PATH = "data/tiles";
 	final static String MODS_PATH = "data/mods";
 	final static String FILE_TYPE = ".png";
-	   
+    
+	private String openedFile = "";
 	JRadioButtonMenuItem miSurvivor;
 	LevelMap levelMap;
 	PipeBroker broker;
@@ -123,18 +128,32 @@ public class Laby extends JFrame implements KeyListener{
         
         fastTimer = new Timer(500, fastTaskPerformer);
 		
+        JMenuItem miNew = new JMenuItem("New file");
+        miNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
+        miNew.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                codeArea.setText("public static void main(String[] args) {\n}");;
+                setOpenedFile("");
+            }
+        });
+        
         JMenuItem miOpen = new JMenuItem("Open");
+        miOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
         miOpen.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser c = new JFileChooser();
-                // Demonstrate "Open" dialog:
+                // "Open" dialog:
                 int rVal = c.showOpenDialog(Laby.this);
                 if (rVal == JFileChooser.APPROVE_OPTION) {
                     try {
                         Reader reader = new FileReader(c.getSelectedFile());
                         codeArea.read(reader, null);
+                        reader.close();
+                        setOpenedFile(c.getSelectedFile().getAbsolutePath());
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
@@ -144,15 +163,58 @@ public class Laby extends JFrame implements KeyListener{
         });
         
         JMenuItem miSave = new JMenuItem("Save");
+        miSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
         miSave.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!openedFile.equals("")) {
+                    try {
+                        Writer writer = new FileWriter(new File(openedFile));
+                        writer.write(codeArea.getText());
+                        writer.close();
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                } else {
+                    // "Save" dialog:
+                    JFileChooser c = new JFileChooser();
+                    int rVal = c.showSaveDialog(Laby.this);
+                    if (rVal == JFileChooser.APPROVE_OPTION) {
+                        try {
+                            Writer writer = new FileWriter(c.getSelectedFile());
+                            writer.write(codeArea.getText());
+                            writer.close();
+                            setOpenedFile(c.getSelectedFile().getAbsolutePath());
+                        } catch (IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+        
+        JMenuItem miSaveAs = new JMenuItem("Save as");
+        miSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK | Event.SHIFT_MASK));
+        miSaveAs.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // "Save" dialog:
                 JFileChooser c = new JFileChooser();
-                // Demonstrate "Open" dialog:
                 int rVal = c.showSaveDialog(Laby.this);
                 if (rVal == JFileChooser.APPROVE_OPTION) {
-                    // TODO stumb
+                    try {
+                        Writer writer = new FileWriter(c.getSelectedFile());
+                        writer.write(codeArea.getText());
+                        writer.close();
+                        setOpenedFile(c.getSelectedFile().getAbsolutePath());
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
             }
         });
@@ -195,8 +257,10 @@ public class Laby extends JFrame implements KeyListener{
 
 		JMenu mFile = new JMenu("File");
 		mFile.setMnemonic(KeyEvent.VK_F);
+		mFile.add(miNew);
         mFile.add(miOpen);
         mFile.add(miSave);
+        mFile.add(miSaveAs);
         mFile.addSeparator();
 		mFile.add(miSurvivor);
 		mFile.add(miStart);
@@ -218,6 +282,7 @@ public class Laby extends JFrame implements KeyListener{
 				return fileName.endsWith(".laby");
 			}
 		};
+		setOpenedFile(openedFile);
 		File path = new File(Laby.LEVEL_PATH);// + Laby.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 		JLabel languageLabel = new JLabel("Language:");
 		String[] language = {"C"};
@@ -375,6 +440,11 @@ public class Laby extends JFrame implements KeyListener{
     public void keyTyped(KeyEvent arg0) {
         // TODO Auto-generated method stub
         
+    }
+    
+    public void setOpenedFile(String openedFile) {
+        this.openedFile = openedFile;
+        this.setTitle("jLaby " + openedFile);
     }
 
 }
